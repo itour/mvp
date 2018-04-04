@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.ISvnTaskDao">
+	<insert id="saveLogList" useGeneratedKeys="true" parameterType="java.util.List">
+		INSERT ignore  INTO svn_log (ID, AUTHOR, COMMITTIME, MESSAGE,
+		REVISION,MODIFYNUM,DELNUM,NO,COLDATE,FILENUM)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.ID},#{item.AUTHOR},#{item.COMMITTIME},#{item.MESSAGE},#{item.REVISION},#{item.MODIFYNUM},#{item.DELNUM},#{item.NO},#{item.COLDATE},#{item.FILENUM})
+		</foreach>
+	</insert>
+
+	<select id="getMonthCollect" parameterType="String"
+		resultType="com.icss.mvp.entity.CodeQualityInfo">
+		SELECT
+		NO,SUM(MODIFYNUM-DELNUM) AS CODETOTAL, COMMITTIME AS staticmonthn
+		FROM
+		svn_log
+		WHERE DATE_FORMAT(COMMITTIME,'%Y%m') = #{month}
+		GROUP BY NO
+	</select>
+	<update id="updateSvnMonthCollect" parameterType="com.icss.mvp.entity.CodeQualityInfo">
+			UPDATE project_parameter_value_new SET VALUE=#{list.CODETOTAL} WHERE NO=#{list.NO} AND DATE_FORMAT(MONTH,'%Y%m') = #{month} AND PARAMETER_ID = 129
+	</update>
+	
+	<insert id="insertSvnMonthCollect" parameterType="com.icss.mvp.entity.CodeQualityInfo">
+		insert into project_parameter_value_new 
+		(NO, MONTH, PARAMETER_ID, VALUE)
+		values
+			(#{list.no}, #{list.staticmonthn}, 129, #{list.codetotal})
+	</insert>
+	
+	<select id ="serchSvn" parameterType="java.lang.String" resultType = "com.icss.mvp.entity.SvnLogs">
+		select * from svn_log  where no = #{no}
+	</select>
+	
+	<select id = "addCode" resultType="int" >
+		select sum(modifynum)  from svn_log s where author = #{author} and no =#{no}  and month(committime) = #{month}
+	</select>
+	
+	<select id = "searchByAuthor" resultType="int" parameterType="java.lang.String">
+		select month(committime) from svn_log where author =#{author}
+	</select>
+</mapper>

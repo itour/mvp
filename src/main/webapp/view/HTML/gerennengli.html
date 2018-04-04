@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>可视化度量平台</title>
+    <link rel="stylesheet" href="css/DefaultSkin.css" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../resources/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/comm/datagrid-header-tooltip.js"></script>
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="../../resources/underscore/underscore.js"></script>
+    <script type="text/javascript" src="../../resources/js/comm/comm.js"></script>
+    <script type="text/javascript" src="js/gerennengli.js"></script>
+</head>
+<body>
+    <table width="99.5%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <div class="change-chart">
+                    <div class="chart-title">
+                        <span>开发效率</span>
+                    	<span style="color:#2e8afc;float: right;">起始日期:
+                    		<input style="border-color:#2e8afc;color: #2e8afc;
+	                    		background-image: url(images/dateicon.png); /*引入图片图片*/
+						        background-repeat: no-repeat; /*设置图片不重复*/
+						        background-position: 5px 1px; /*图片显示的位置*/
+						        padding-left: 30px"
+	                    	    type="date" value="2015-09-24"/>
+                    	   	<img src="images/editicon.png" alt="编辑" style="margin-bottom:-4px;"/>
+                    	</span>    
+                    </div>
+                    <div style="padding-top: 10px;padding-left: 30px;">
+                    	<select id="develop-sel" style="border-color:#2e8afc ;color:#2e8afc;">
+                    		<option selected="selected" style="color: black">每月新增修改代码量</option>
+                    		<option style="color: black">每两周新增修改代码量</option>
+                    	</select>
+                    </div>
+                    <div class="chart" style="margin-top: 10px;">
+                        <div id="Div1" style="width: 100%; height: 330px;">
+                        </div>
+                    </div>
+                    <div class="main-button">
+                    	<span style="font-size: 13px;padding-left:10px">需求代码量(KB)</span>
+                    	<span style="float: right;margin-right: 20px;">
+	                    	<input id ="cancel"   type="button" value="取消" style="border-color: #2e8afc;color:#2e8afc;background-color: white;padding: 2px 5px 2px 5px;font-size: 10px;border-radius:5px; " />
+	                    	<input id = "save"  type="button" value="保存" style="border-color: #2e8afc;color:#fff;background-color: #2e8afc;padding: 2px 5px 2px 5px;font-size: 10px;border-radius:5px;"/>
+                    	</span>
+                    </div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data-table">
+                        <thead>
+                            <tr bgcolor="#b4aeb5">
+                                <td style="line-height: 30px;">
+                                    月份
+                                </td>
+                                <td style="line-height: 30px;">
+                                    需求预算
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">需求实际</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">累计代码缺口</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">完成率</span>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    XXXX
+                                </td>
+                                <td>
+                                    XXXX
+                                </td>
+                                <td>
+                                    XXX
+                                </td>
+                                <td>
+                                    XX
+                                </td>
+                                <td>
+                                    XXXX
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    XXXX
+                                </td>
+                                <td>
+                                    XXXX
+                                </td>
+                                <td>
+                                    XXX
+                                </td>
+                                <td>
+                                    XX
+                                </td>
+                                <td>
+                                    XXXX
+                                </td>
+                            </tr>
+                             <tr>
+                                <td>
+                                    XXXX
+                                </td>
+                                <td>
+                                    XXXX
+                                </td>
+                                <td>
+                                    XXX
+                                </td>
+                                <td>
+                                    XX
+                                </td>
+                                <td>
+                                    XXXX
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div >
+                    	<span style="font-size: 13px;padding-left:10px;">员工个人代码量(KB)</span>
+                    </div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data-table" id="gerenCode">
+                        <thead>
+                            <tr bgcolor="#b4aeb5">
+                                <td style="line-height: 30px;">
+                                    姓名
+                                </td>
+                                <td style="line-height: 30px;">
+                                   工号
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">1月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">2月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">3月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">4月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">5月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">6月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">7月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">8月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">9月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">10月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">11月</span>
+                                </td>
+                                <td style="line-height: 30px;">
+                                    <span title="XX">12月</span>
+                                </td>
+                                 <td style="line-height: 30px;">
+                                    <span title="XX">合计</span>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+		//鼠标悬停按钮事件 onmouseover="onmouse()" onmouseout="outmouse()"
+		//<input id ="cancel" onmouseover="onmouse()" onmouseout="outmouse()" type="button" value="取消" style="border-color: #2e8afc;color:#2e8afc;background-color: white;padding: 2px 5px 2px 5px;font-size: 10px;border-radius:5px; " />
+	    //<input id = "save" onmouseover="onmouse()" onmouseout="outmouse()" type="button" value="保存" style="border-color: #2e8afc;color:#fff;background-color: #2e8afc;padding: 2px 5px 2px 5px;font-size: 10px;border-radius:5px;"/>
+		/* var save = document.getElementById("save");
+		var cancel = document.getElementById("cancel");
+		function onmouse(){
+			save.style.color ="#2e8afc";
+			save.style.backgroundcolor = "white";
+			cancel.style.color ="#2e8afc";
+			cancel.style.backgroundcolor = "white";
+		};
+		
+		function outmouse(){
+			save.style.color ="#fff";
+			debugger
+			save.style.backgroundcolor = "#2e8afc";
+			cancel.style.color ="#fff";
+			cancel.style.backgroundcolor = "#2e8afc";
+			
+		}; */
+		
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('Div1'));
+        // 指定图表的配置项和数据
+        var option1 = {
+        	title:{
+        		
+        	},
+            tooltip: {},
+            xAxis: {
+            	type:'category',
+            	splitLine:{show: false},//去除网格线
+            	name:"月份(2018)",
+            	nameTextStyle:{
+            		color:'#333'
+            		},
+            	axisLabel:{
+            		textStyle:{
+            			color:'#333',
+            		}
+            	},
+                axisLine:{
+            		
+                    color: '#333',
+                 
+                    lineStyle:{
+                        color:'#2e8afc',
+                        width: 2,
+                    }
+                },
+                data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            },
+            yAxis: {
+            	type:'value',
+            	splitLine:{show: false},//去除网格线
+            	name:"(KB)",
+            	nameTextStyle:{
+            		color:'#333'
+            		},
+            	axisLabel:{
+            		textStyle:{
+            			color:'#333',
+            		}
+            	},
+            	axisLine:{
+                    lineStyle:{
+                        color:'#2e8afc',
+                        width: 2,
+                    }
+                } 
+            },
+            series: [{
+                type: 'bar',
+                data: [Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1), Math.floor(Math.random() * 99 + 1)],
+                barWidth: 30,
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#2e8afc'
+                        }, {
+                            offset: 1,
+                            color: 'white'
+                        }]),
+                    }
+                }
+            }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);
+    </script>
+</body>
+</html>

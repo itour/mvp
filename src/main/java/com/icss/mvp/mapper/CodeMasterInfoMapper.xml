@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.ICodeMasterInfoDao">
+	<resultMap id="CodeMasterMap" type="com.icss.mvp.entity.CodeMasterInfo">
+	  <result property="codekey" column="CODEKEY" />
+	  <result property="name" column="NAME"/>
+	  <result property="value" column="VALUE"/>
+	  <result property="note" column="NOTE"/>
+	</resultMap>
+	<select id="getList" resultMap="CodeMasterMap">
+		SELECT *
+		FROM code_master_info
+		WHERE 1=1
+		<if test="codeM.codekey!=null and codeM.codekey!=''">  
+	   	 	AND codekey = #{codeM.codekey}  
+	    </if>
+	    <if test="codeM.name!=null and codeM.name!=''">  
+	   		AND name = #{codeM.name}  
+	    </if>
+	    <if test="codeM.value!=null and codeM.value!=''">  
+	   		AND value = #{codeM.value}  
+	    </if>
+	    <if test="codeM.note!=null and codeM.note!=''">  
+	   		AND note = #{codeM.note}  
+	    </if>
+	</select>
+	
+</mapper>

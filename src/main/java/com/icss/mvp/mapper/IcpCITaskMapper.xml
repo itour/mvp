@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.IIcpCITaskDao">
+	<insert id="insertUADPGarding" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_uadp_garding
+		VALUES
+		<foreach collection="listuadp" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.projectName},#{item.owner},#{item.sAI},#{item.sAIDefect},
+			#{item.consistencyDefect},#{item.codeNum},#{item.action}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertCCT" useGeneratedKeys="true" parameterType="java.util.List">
+		INSERT INTO ci_cct_summary
+		VALUES
+		<foreach collection="listcct" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.coefficient},#{item.size},
+			#{item.equivalent},#{item.nBNC},#{item.added},#{item.modified},#{item.deleted},
+			#{item.comments_ratio},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertCheckStyle" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_checkstyle_summary
+		VALUES
+		<foreach collection="listcheckstyle" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.error,jdbcType=INTEGER},
+			#{item.warning,jdbcType=INTEGER},#{item.information,jdbcType=INTEGER},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertFindBugs" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_findbugs_summary
+		VALUES
+		<foreach collection="listfindbugs" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.hPRIbug,jdbcType=INTEGER},#{item.mPRIbug,jdbcType=INTEGER},#{item.lPRIbug,jdbcType=INTEGER},
+			#{item.bugTotal,jdbcType=INTEGER},#{item.hPRIdensity}
+			,#{item.mPRIdensity},#{item.lPRIdensity},#{item.densityTotal},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertSimian" useGeneratedKeys="true" parameterType="java.util.List">
+		INSERT INTO ci_simian_summary
+		VALUES
+		<foreach collection="listsimian" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.SimiThreshold,jdbcType=INTEGER},#{item.dupLine,jdbcType=INTEGER},
+			#{item.dupBlock,jdbcType=INTEGER},#{item.fileDup,jdbcType=INTEGER},#{item.file,jdbcType=INTEGER},
+			#{item.significantLine,jdbcType=INTEGER},#{item.totalRawLine,jdbcType=INTEGER},
+			#{item.percentDup,jdbcType=INTEGER},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertSourceMonitor" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_source_monitor_summary
+		VALUES
+		<foreach collection="listsourcemonitor" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.statement,jdbcType=INTEGER},#{item.method,jdbcType=INTEGER},
+			#{item.file,jdbcType=INTEGER},#{item.maxDepth,jdbcType=INTEGER},#{item.maxComplexity,jdbcType=INTEGER},
+			#{item.avgMethod},#{item.avgStatement},#{item.mI},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertSharpCounter" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_sharp_counter_summary
+		VALUES
+		<foreach collection="listsharpcounter" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.size},#{item.equivalent},#{item.nBNC},#{item.added},#{item.modified}
+			,#{item.deleted},#{item.totalDirs},#{item.totalFiles},#{item.alterDirs},#{item.alterFile},#{item.coefficient}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertCodeDex" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_codedex_summary
+		VALUES
+		<foreach collection="listcodedex" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.jobid},#{item.layerpath},#{item.total},#{item.module},#{item.owner},#{item.coverityNew}
+			,#{item.coverityDismissed},#{item.coverityFixed},#{item.securityNew},#{item.securityDismissed},#{item.securityFixed}
+			,#{item.fortifyNew},#{item.fortifyDismissed},#{item.fortifyFixed},#{item.mandatory},#{item.suggest}
+			,#{item.depends},#{item.action},#{item.links}
+			)
+		</foreach>
+	</insert>
+	<insert id="inserteLltCoverage" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_llt_coverage_summary
+		VALUES
+		<foreach collection="listlltcove" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.error},#{item.failure},#{item.3},#{item.method},#{item.line_coverage},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertCodeDEXWeb" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_codedex_web_summary
+		VALUES
+		<foreach collection="listcodedexweb" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.jobid},#{item.layerpath},#{item.total},#{item.module},#{item.owner},#{item.web_new}
+			,#{item.web_dismissed},#{item.web_fixed},#{item.action}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertAutospace" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		INSERT INTO ci_autospace_summary
+		VALUES
+		<foreach collection="listautospace" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.totalCase},#{item.passedPercent},#{item.passed},#{item.failed},#{item.investigated}
+			,#{item.unavailable},#{item.blocked},#{item.none},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="inserteEmma" useGeneratedKeys="true" parameterType="java.util.List">
+		INSERT INTO ci_emma
+		VALUES
+		<foreach collection="listemma" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},#{item.name},#{item.classes},#{item.method},#{item.block},#{item.line},#{item.sort}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertCI" parameterType="com.icss.mvp.entity.CiProjInfo" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO icp_ci_01
+		(no,import_time,struct_time,struction_duration,creator,flag)
+		VALUES
+		(#{no,jdbcType=VARCHAR},#{import_time},#{struct_time},
+		#{structDuration},#{creator},#{flag})
+	</insert>
+	<select id="getMaxId" resultType="com.icss.mvp.entity.CiProjInfo">
+	<![CDATA[
+       SELECT  max(id) as id from icp_ci_01
+       ]]>
+	</select>
+	<update id="updateCI" parameterType="java.lang.String">
+		UPDATE icp_ci
+		SET struction_duration=#{ciInfo.structDuration},flag=#{ciInfo.flag},
+		import_time=#{ciInfo.import_time},creator=#{ciInfo.creator}
+		WHERE
+		DATE_FORMAT(struct_time,'%Y%m%d') =
+		DATE_FORMAT(#{struct_time},'%Y%m%d')
+		AND no = #{no}
+	</update>
+	<select id="queryCodeDexPara" resultType="java.util.HashMap">
+	<![CDATA[
+		select id,no,c.struct_time,
+               (covNewNum+secNewNum+forNewNum)-(covDisNum+covFixNum+secDisNum+secFixNum+forDisNum+forFixNum) as codeCCNum
+         from (SELECT a.no,a.id,
+	                  DATE_FORMAT(struct_time,'%Y%m%01') as struct_time,
+	                  sum(b.coverity_new)as covNewNum,
+	                  sum(b.coverity_dismissed)as covDisNum,
+	                  sum(b.coverity_fixed)as covFixNum,
+	                  sum(b.security_new)as secNewNum,
+	                  sum(b.security_dismissed)as secDisNum,
+	                  sum(b.security_fixed)as secFixNum,
+	                  sum(b.fortify_new)as forNewNum,
+	                  sum(b.fortify_dismissed)as forDisNum,
+	                  sum(b.fortify_fixed)as forFixNum
+                FROM icp_ci a
+                JOIN ci_codedex_summary b ON a.id = b.id)c
+      GROUP BY id,no,DATE_FORMAT(struct_time,'%Y%m');
+		]]>
+	</select>
+	<select id="queryUADPGardingPara" resultType="java.util.HashMap">
+	<![CDATA[
+		SELECT no,a.id,DATE_FORMAT(struct_time,'%Y%m%01') as struct_time,project_name,sai
+          FROM icp_ci a
+          JOIN ci_uadp_garding b ON a.id = b.id
+      GROUP BY id,no,DATE_FORMAT(struct_time,'%Y%m');
+		]]>
+	</select>
+	<select id="querySourceMonitorPara" resultType="java.util.HashMap">
+	<![CDATA[
+         SELECT a.no, a.id, DATE_FORMAT(struct_time,'%Y%m%01') as struct_time, b.name, avg_complexity_statement
+           FROM icp_ci a
+           JOIN ci_source_monitor_summary b ON a.id = b.id
+            AND b. NAME = 'Total'
+       GROUP BY a.id,a.no,DATE_FORMAT(struct_time,'%Y%m');
+		]]>
+	</select>
+	<select id="queryLltCoveragePara" resultType="java.util.HashMap">
+	<![CDATA[
+        SELECT a.no, a.id, DATE_FORMAT(struct_time,'%Y%m%01') as struct_time , line_coverage
+           FROM icp_ci a
+           JOIN ci_llt_coverage_summary b ON a.id = b.id
+       GROUP BY a.id,a.no,DATE_FORMAT(struct_time,'%Y%m');
+		]]>
+	</select>
+	<select id="queryStructPara" resultType="java.util.HashMap">
+	<![CDATA[
+          select id,no,b.struct_time,avgStruTime,
+                 (CASE WHEN tatol = 0 THEN 0 ELSE (susNum/tatol) END) AS versionRate
+           from (SELECT id,no,DATE_FORMAT(struct_time, '%Y%m%01') AS struct_time, 
+                        AVG(struction_duration)as avgStruTime,
+                        COUNT(CASE WHEN flag = 1 THEN 1 ELSE NULL END) AS susNum,
+                        COUNT(flag) AS tatol
+                  FROM icp_ci
+                 WHERE flag = 1)b
+       GROUP BY id, no, DATE_FORMAT(struct_time, '%Y%m');
+		]]>
+	</select>
+	<select id="queryBugs" resultType="java.util.HashMap">
+   <![CDATA[ 
+   select ci.id as id,ci.no as no,ci.struct_time as struct_time,
+   (IFNULL(fig.h_pri_bug,0)+IFNULL(cs.ERROR,0)+IFNULL(cs.warning,0)+
+   IFNULL(pct.ERROR,0)+IFNULL(pct.warning,0)) as value
+   from (select ci.no as no, ciall.id as id,
+   DATE_FORMAT(ci.struct_time,'%Y%m%01') as struct_time
+   from (select no, max(struct_time) as struct_time from icp_ci where flag = 1 group by no) ci
+   inner join icp_ci ciall
+   on ci.no = ciall.no and ci.struct_time=ciall.struct_time) ci
+   left JOIN ci_findbugs_summary fig
+   on ci.id = fig.id
+   left join ci_checkstyle_summary cs
+   on ci.id=cs.id
+   LEFT JOIN ci_pclint_summary pct
+   on ci.id=pct.id
+   ]]>
+	</select>
+
+	<select id="queryCCT" resultType="java.util.HashMap">
+	<![CDATA[
+	select icp.no,icp.id, DATE_FORMAT(icp.struct_time,'%Y%m%01') as struct_time,
+	(cct.added+cct.modified) as value 
+	from (select ci.no,cia.id,ci.struct_time from 
+    (select no,max(struct_time) as struct_time from icp_ci where flag=1 group by no) ci
+    INNER JOIN icp_ci cia on ci.no=cia.no and ci.struct_time=cia.struct_time)icp
+    INNER JOIN ci_cct_summary cct 
+    on icp.id=cct.id 
+		]]>
+	</select>
+
+	<select id="querySimian" resultType="java.util.HashMap">
+	<![CDATA[
+    select icp.no,icp.id,DATE_FORMAT(icp.struct_time,'%Y%m%01') as struct_time,
+    sim.percent_of_duplication as  value from (
+    select ci.no,cia.id,ci.struct_time from(
+    select no,MAX(struct_time) as struct_time from icp_ci where flag=1 group by no) ci
+    inner join icp_ci cia on ci.no=cia.no and ci.struct_time=cia.struct_time)icp
+    inner join ci_simian_summary sim on icp.id=sim.id  
+		]]>
+	</select>
+</mapper>

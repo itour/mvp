@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登录界面</title>
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../resources/bootstrap/bootstrap.min.css"/>
+<script type="text/javascript" src="../../resources/bootstrap/bootstrap.min.js"></script>
+<script src="../resources/js/comm/comm.js" type="text/javascript"></script>
+<script src="../resources/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="../resources/jquery/jquery.form.js" type="text/javascript"></script>
+<script language="javascript">
+if (window != top) {
+	top.location.href = location.href;
+    }
+$.ajaxSetup({
+	error : function(XMLHttpRequest, textStatus, errorThrown) {
+		if (XMLHttpRequest.status == 403) {
+			alert('您没有权限访问此资源或进行此操作');
+			return false;
+		}
+	},
+	complete : function(XMLHttpRequest, textStatus) {
+		var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头,sessionstatus， 
+		if (sessionstatus == 'timeOut') {
+			//如果超时就处理 ，指定要跳转的页面  
+			var top = getTopWinow(); //获取当前页面的顶层窗口对象
+			alert('登录超时, 请重新登录.');
+			top.location.href = getRootPath()+ "/view/login.html"; //跳转到登陆页面
+		}
+	}
+});   
+/** 
+ * 在页面中任何嵌套层次的窗口中获取顶层窗口 
+ * @return 当前页面的顶层窗口对象 
+ */
+function getTopWinow() {
+	var p = window;
+	while (p != p.parent) {
+		p = p.parent;
+	}
+	return p;
+}
+	$(function() {
+		$('.loginbox').css({
+			'position' : 'absolute',
+			'left' : ($(window).width() - 692) / 2
+		});
+		$(window).resize(function() {
+			$('.loginbox').css({
+				'position' : 'absolute',
+				'left' : ($(window).width() - 692) / 2
+			});
+		});
+
+		$("#username").keydown(function(event) {
+			if (event.keyCode == 13) {
+				doLogin();
+			}
+		});
+
+		$("#password").keydown(function(event) {
+			if (event.keyCode == 13) {
+				doLogin();
+			}
+		});
+	});
+
+	function doLogin() {
+		var username = $("#USERNAME").val().trim();
+		var password = $("#PASSWORD").val().trim();
+		var w3account = $("#W3Count").is(':checked');
+		if (username == undefined || username == "") {
+			alert("用户名不能为空");
+			this.focus();
+			return false;
+		}
+		if (password == undefined || password == "") {
+			alert("密码不能为空");
+			this.focus();
+			return false;
+		}
+		if (w3account == undefined || w3account == "") {
+			
+			 w3account = false;
+		}
+		$("#loginForm").ajaxSubmit(
+						{
+							url : getRootPath() + "/login/dologin",
+							type : "POST",
+							data : {
+								"USERNAME" : username,
+								"PASSWORD" : password,
+								"ISONLINE" : w3account? 1:0
+							},
+							dataType : 'JSON',
+							xhrFields : {
+								// 设置XMLHttpRequest的其它属性
+								// 如果这里将'withCredentials'设置为true
+								// 则服务器也要相应设置'Access-Control-Allow-Credentials: true'.
+								withCredentials : true
+							},
+							success : function(data) {
+								if (data == "FAILED") {
+									$("#loginContent").css("display", "block");
+									$("#loginContent")
+											.html('<font style="color:red;font-size:15px;">用户名或密码错误，请确认！</font>');
+									setTimeout(function() {
+										$("#loginContent").css("display","none");
+									}, '3000');
+								} else {
+									$("#loginContent").css("display", "block");
+									$("#loginContent")
+											.html('<font style="color:red;font-size:15px;">登陆成功，正在加载,请稍后...</font>');
+									setTimeout(function() {
+										$("#loginContent").css("display","none");
+									}, '3000');
+									window.location.href = getRootPath()
+											+ "/view/HTML/index.html";
+								}
+							},
+							error : function(data) {
+								$("#loginContent").css("display", "block");
+								$("#loginContent")
+										.html('<font style="color:red;font-size:15px;">用户名或密码错误，请确认！</font>');
+								setTimeout(function() {
+									$("#loginContent").css("display", "none");
+								}, '3000');
+							}
+						});
+	}
+</script> 
+</head>
+<body style="background-image:url(../img/bg.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+
+	<form id="loginForm" name="loginForm"
+		style="margin-top: 220px; padding-left: 20px;">
+		<div class="loginbody">
+			<div class="loginbox"
+				style="background-size: cover; background-repeat: no-repeat; background-position: center top; padding-left: 160px;">
+
+				<table cellpadding="0" cellspacing="0"
+					style="background-color: honeydew; width: 350px; height: 280px;
+					border-top:8px solid   #04d979;border-left:8px solid   #04d979;
+					border-right:8px solid  #04d979;border-bottom:8px solid  #04d979; "
+					align="center">
+					<tr>
+						<td  height="80px;" >
+						    <div style="width:350px;height:80px;font-size:26px;" >
+					          <img src="../img/bgtn.png"  width="350" height="80px"/> 
+				            </div>  
+						</td>
+					</tr>
+					<tr>
+						<td  >
+							<div class="input-group" align="center" style="margin-top: 35px; padding-left: 60px;">
+								<span class="input-group-addon">账&nbsp;号&nbsp;<span class="glyphicon glyphicon-user"></span></span> 
+								<input id="USERNAME" name="username" type="text" placeholder="请输入账号" style="height:30px;margin-right:43px;" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<div class="input-group" align="center" style="padding-left: 60px;margin-top: 20px;">
+								<span class="input-group-addon">密&nbsp;码&nbsp;<span class="glyphicon glyphicon-lock"></span></span> 
+								<input id="PASSWORD" name="password" type="password" placeholder="请输入密码" style="height:30px;margin-right:43px;"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<div class="input-group" align="center" style="padding-left: 60px;margin-top: 20px;">
+								<span>使用W3账号登陆</span>
+								<input id="W3Count"  name="W3Count" type="checkbox"/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td  height="25px"; style="padding-left: 100px;">
+						  <span id="loginContent" style="display: none;"></span>
+						</td>
+					</tr>
+					<tr>
+						<td  style="padding-left: 125px;">
+						<input name="login" id="loginBtn" type="button" class="loginbtn" "
+							style="width: 109px; height: 35px; background-color: #04d979; font-size: 20px;margin-bottom: 20px;
+							background-image:url(../img/dlnn.png) ;"
+							onclick="javascript:doLogin()" /></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+</body>
+
+</html>

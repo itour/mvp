@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="panel-fit">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>项目度量信息列表</title>
+<link rel="stylesheet" type="text/css" href="../../resources/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resources/easyui/themes/default/easyui.css">
+<script type="text/javascript" src="../../resources/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../resources/jquery/jquery.form.js"></script>
+<script type="text/javascript" src="../../jquery.min.js"></script>
+<script type="text/javascript" src="../../resources/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../resources/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../resources/js/comm/comm.js"></script>
+<!--script type="text/javascript" src="../projectMaintain/projectDSConf.js"></script-->
+</head>
+<body>
+	<div class="container-fluid" style="height:100%">
+		<div id="projectInfo" class="easyui-panel" title="项目基本信息" style="width:100%">
+			<div style="margin-bottom:5px;margin-top:5px">
+				<input class="easyui-textbox" id="name" label ="&nbsp;&nbsp;&nbsp;项目名称" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="no" label ="&nbsp;&nbsp;&nbsp;项目编码" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="projectType" label ="&nbsp;&nbsp;&nbsp;项目类型" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="type" label ="&nbsp;&nbsp;&nbsp;交付类型" labelPosition="left"style="width:20%">
+			</div>
+			<div style="margin-bottom:5px;margin-top:5px">
+				<input class="easyui-textbox" id="bu" label ="&nbsp;&nbsp;&nbsp;事业部&nbsp;&nbsp;&nbsp;&nbsp;" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="pdu" label ="&nbsp;&nbsp;&nbsp;产品部&nbsp;&nbsp;&nbsp;" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="du" label ="&nbsp;&nbsp;&nbsp;交付部&nbsp;&nbsp;&nbsp;" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="area" label ="&nbsp;&nbsp;&nbsp;地域&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" labelPosition="left"style="width:20%">
+			</div>
+			<div style="margin-bottom:5px;margin-top:5px">
+				<input class="easyui-textbox" id="predictMoney" label ="&nbsp;&nbsp;&nbsp;预计费用" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="workerCount" label ="&nbsp;&nbsp;&nbsp;需求人数" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="startDate" label ="&nbsp;&nbsp;&nbsp;开始日期" labelPosition="left"style="width:20%">
+				<input class="easyui-textbox" id="endDate" label ="&nbsp;&nbsp;&nbsp;结束日期" labelPosition="left"style="width:20%">
+			</div>
+		</div>
+		<div class="easyui-panel" title="数据源配置信息" style="width:100%">
+			<div id="tb" style="margin-bottom:5px;margin-top:5px;height:auto">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">添加</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消</a>
+			</div>
+			<table id="projectDSConfig" class="easyui-datagrid" title="数据源配置信息" style="width:100%;height:auto"
+			data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#tb',
+				url: 'datagrid_data1.json',
+				method: 'get',
+				onClickCell: onClickCell,
+				onEndEdit: onEndEdit
+			">
+				<thead>
+					<tr>
+						<th data-options="field:'status',width:60,align:'center',editor:{type:'checkbox',options:{on:'P',off:''}}">状态</th>
+						<th data-options="field:'sourceValue',width:100,
+							formatter:function(value,row){
+								return row.sourceValue;
+							},
+							editor:{
+								type:'combobox',
+								options:{
+									valueField:'sourceValue',
+									textField:'sourceValue',
+									method:'get',
+									url:'products.json',
+									required:true
+								}
+							}">源名称</th>
+						<th data-options="field:'url',width:80,align:'right',editor:{type:'textbox',options:{url}}">URL</th>
+						<th data-options="field:'user',width:80,align:'right',editor:'textbox'">用户名</th>
+						<th data-options="field:'password',width:250,editor:'textbox'">密码</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

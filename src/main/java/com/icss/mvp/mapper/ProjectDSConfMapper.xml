@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.IProjectSourceConfigDao">
+	<resultMap id="ProjDSMap" type="com.icss.mvp.entity.ProjectDataSourceInfo">
+	  <result property="no" column="NO" />
+	  <result property="source_value" column="SOURCE_VALUE"/>
+	  <result property="url" column="URL"/>
+	  <result property="user" column="USER"/>
+	  <result property="password" column="PASSWORD"/>
+	  <result property="createDate" column="CREATE_DATE"/>
+	  <result property="creator" column="CREATOR"/>
+	  <result property="updateDate" column="UPDATE_DATE"/>
+	  <result property="updateUser" column="UPDATE_USER"/>
+	  <result property="version" column="VERSION"/>
+	</resultMap>
+
+	<select id="queryProjDSInfo" resultMap="ProjDSMap">
+			select * from source_config
+		    WHERE 1=1
+		 <choose>
+			<when test = "projNo!=null and projNo!=''">
+				AND NO = #{projNo}
+			</when>
+			<otherwise>
+				AND 0=1
+			</otherwise> 
+		</choose>
+		<if test="sort!=null and sort!='' and order!=null and order!=''">  
+	   		order by ${sort} ${order}
+	    </if>
+	</select>
+	<select id="queryProjDSByKey" resultMap="ProjDSMap">
+		select * 
+		from source_config
+		where 1=1
+		<choose>
+			<when test = "projNo!=null and projNo!=''">
+				AND NO = #{projNo}
+			</when>
+			<otherwise>
+				AND 0=1
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="source_value!=null and source_value!=''">
+				AND SOURCE_VALUE = #{source_value}
+			</when>
+			<otherwise>
+				AND 0=1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id="insertProjDS" parameterType="com.icss.mvp.entity.ProjectDataSourceInfo">
+		INSERT INTO source_config (NO,SOURCE_VALUE,URL,USER,PASSWORD,CREATE_DATE,CREATOR,VERSION)
+		VALUES(#{no},#{source_value},#{url},#{user},#{password},#{createDate},#{creator},#{version})
+	</insert>
+	<update id="updateProjDS" parameterType="com.icss.mvp.entity.ProjectDataSourceInfo">
+		UPDATE source_config SET
+		URL=#{url},USER=#{user},PASSWORD=#{password},VERSION=#{version},
+		UPDATE_DATE=#{updateDate},UPDATE_USER=#{updateUser}
+		WHERE
+		NO=#{no} AND  SOURCE_VALUE=#{source_value}
+	</update>
+	<delete id="delProjDS" parameterType="com.icss.mvp.entity.ProjectDataSourceInfo">
+		DELETE FROM source_config
+		WHERE
+		NO=#{no} AND  SOURCE_VALUE=#{source_value}
+	</delete>
+	<select id="queryAllDS" resultMap="ProjDSMap">
+		SELECT *
+		FROM source_config
+		WHERE 1=1
+	</select>
+	<select id="queryDSBySource" resultMap="ProjDSMap" parameterType="java.lang.String">
+		SELECT *
+		FROM source_config
+		WHERE SOURCE_VALUE = #{source_value}
+	</select>
+</mapper>

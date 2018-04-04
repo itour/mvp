@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>可视化度量平台</title>
+ <link rel="stylesheet" type="text/css" href="../../resources/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resources/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="css/DefaultSkin.css" type="text/css" />
+<script type="text/javascript" src="../../resources/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../resources/jquery/jquery.form.js"></script>
+<script type="text/javascript" src="../../resources/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../resources/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../resources/js/comm/comm.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+
+</head>
+
+<body>
+<div class="top">
+	      <div class="logo">
+            <a href="../HTML/index.html">
+                <img src="images/logo.png" /></a></div>
+        <div class="daohang">
+            <a href="../HTML/index.html"><i class="i_shouye"></i>首页</a><img src="images/fengexian.png" />
+           <a href="../mainFrame/page.html"> <i class="i_guanli"></i>管理</a>
+        </div>
+</div>
+<div class="left">
+    <div class="list">
+    	 <ul class="yiji">
+            <li>
+            	<a href="#" class="inactive"><i class="num-3"></i>项目管理</a>
+            	<ul style="display: none">
+            		<li><a class="active" id="infoList">项目信息列表</a></li>
+           		</ul>
+            </li>
+            <li>
+            	<a href="#" class="inactive"><i class="num-3"></i>参数管理</a>
+            	<ul style="display: none">
+            		<li><a class="active" id="paramList">度量参数列表</a></li>
+           		</ul>
+            </li>
+            <li>
+            	<a href="#" class="inactive"><i class="num-3"></i>用户管理</a>
+            	<ul style="display: none">
+            		<li><a class="active" id="userList">用户信息列表</a></li>
+           		</ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="main" id="sub-page">
+	<div id="tbs" class="easyui-tabs" style="width:99%;height:99%">
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.ILoginDao">
+	<select id="getUserInfo" parameterType="com.icss.mvp.entity.UserInfo" resultType="com.icss.mvp.entity.UserInfo">
+		SELECT *
+		FROM
+		sys_user where USERNAME=#{USERNAME} and PASSWORD=#{PASSWORD}
+	</select>
+	
+</mapper>

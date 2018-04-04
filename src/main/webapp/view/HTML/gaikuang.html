@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>可视化度量平台</title>
+    <link rel="stylesheet" href="../../resources/easyui/themes/default/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="../../resources/bootstrap/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/DefaultSkin.css" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../resources/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/comm/datagrid-header-tooltip.js"></script>
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="../../resources/underscore/underscore.js"></script>
+    <script type="text/javascript" src="../../resources/js/comm/comm.js"></script>
+    <script type="text/javascript" src="js/gaikuang.js"></script>
+    <style>
+		.tablenew tr:nth-child(odd){background:#deeef5;}
+		.mousetable tr:hover{background:#73B1E0;}
+	</style>
+    <script type="text/javascript">
+        function changeTab(obj) {
+            obj.className = 'tabs-a-current';
+            if (obj.id == "tab1") {
+                document.getElementById('tab2').className = '';
+                document.getElementById('tab1Page').style.display = 'block';
+                document.getElementById('tab2Page').style.display = 'none';
+            }
+            else {
+                document.getElementById('tab1').className = '';
+                document.getElementById('tab1Page').style.display = 'none';
+                document.getElementById('tab2Page').style.display = 'block';
+            }
+        }
+        function ExpandDetails() {
+        	document.getElementById('expand-details').style.display = 'none';
+        	document.getElementById('detailed-information').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="padding-right: 10px;">
+                <div >
+                    <div style="width: 100%;border-bottom: 2px;">
+                       <ul>
+                       		<li style="height: 30px;">
+	                       		<span style="position:absolute;left:1%">项目名称：<span id="entry-name">xxxxx</span></span>
+	                       		<span style="position:absolute;left:25%">项目经理：<span id="entry-name">xxxxx</span></span>
+	                       		<span style="position:absolute;left:50%">端到端代码量(千行)：<span id="entry-name">xxxxx</span></span>
+	                       		<span style="position:absolute;left:75%">项目估计工作量(人天)：<span id="entry-name">xxxxx</span></span>
+                       		</li>
+                       		<li style="height: 30px;">
+	                       		<span style="position:absolute;left:1%">项目计划开始时间：<span id="entry-name">xxxxx</span></span>
+	                       		<span style="position:absolute;left:25%">项目计划结束时间：<span id="entry-name">xxxxx</span></span>
+	                       		<span style="position:absolute;left:50%">进度偏差率：<span id="entry-name">xxxxx</span></span>
+	                       		<span style="position:absolute;left:75%">商务模式(FP/TM)：<span id="entry-name">xxxxx</span></span>
+                       		</li>
+                       		<div id="expand-details" style="height: 40px;">
+                       			<a onclick="ExpandDetails()" style="position: absolute;right: 50%;text-align: center;cursor: pointer;
+                       			font-family: Microsoft Yahei;font-size: 16px;display: block;width: 100px;color: #667fff;">
+                       				<div>展开详细信息</div><div><img src="images/openicon.png" alt="展开详细信息" width="17px" height="17px"/></div>
+                       			</a>
+                       		</div>
+                       		<div id="detailed-information" style="display:none">
+	                       		<li style="height: 30px;">
+		                       		<span style="position:absolute;left:1%">业务线：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:25%">事业部：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:50%">交付部：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:75%">华为产品线：<span id="entry-name">xxxxx</span></span>
+	                       		</li>
+	                       		<li style="height: 30px;">
+		                       		<span style="position:absolute;left:1%">华为子产品线：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:17%">QA：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:33%">SE：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:50%">项目状态(在行/关闭)：<span id="entry-name">在行</span></span>
+		                       		<span style="position:absolute;left:75%">是否离岸：<span id="entry-name">否</span></span>
+	                       		</li>
+	                       		<li style="height: 30px;">
+		                       		<span style="position:absolute;left:1%">项目类型(开发测试)：<span id="entry-name">开发</span></span>
+		                       		<span style="position:absolute;left:25%">合作类型(委托开发/总...)：<span id="entry-name">委托开发</span></span>
+		                       		<span style="position:absolute;left:50%">PDU/SPDT：<span id="entry-name">xxxxx</span></span>
+		                       		<span style="position:absolute;left:75%">地域：<span id="entry-name">xxxxx</span></span>
+	                       		</li>
+	                       		<li style="height: 30px;">
+		                       		<span style="position:absolute;left:1%">项目简介：<span id="entry-name">2017年。。。</span></span>
+		                       	</li>
+                       		</div>
+                       </ul>
+                    </div>
+                    <div style="margin: 10px;border-color: #ddd;border-width: 1px;border-radius: 3px;border-style: solid;">
+                    	<div style="height: 30px;margin: 0px 10px 0px 10px;">
+                    		<span style="float: left;font-size: 15px;">关键角色</span>
+                    		<div id="edit" data_obj="1" style="left: 47%;position: absolute;padding: 1px 0px 0px 0px;">
+	                    		<a onclick="tableEdit('edit','guanjianjuesedo')" style="color: #667fff;">
+	                    			<i><img style="margin: 2px;" src="images/editicon.png" alt="编辑" width="17px" height="17px"/></i><span>编辑</span>
+	                    		</a>
+                    		</div>
+                    		<div id="guanjianjuesedo" style="left: 35%;position: absolute;display:none">
+                    			<a id="tableadd" onclick="tableAdd('guanjianjuese')" class="btn btn-info" style="margin: 3px 10px 1px 0px;padding: 1px 10px 1px 10px;">增加</a>
+	                    		<a onclick="tableCancel('guanjianjuese')" class="btn btn-default" style="margin: 3px 10px 1px 0px;padding: 1px 10px 1px 10px;">取消</a>
+	                    		<a id="tablesave" onclick="tableSave('edit','guanjianjuesedo')" class="btn btn-info" style="margin: 3px 0px 1px 0px;padding: 1px 10px 1px 10px;">保存</a>
+                    		</div>
+                    		<div id="edit1" data_obj="1" style="float: right;padding: 1px 0px 0px 0px;">
+	                    		<a onclick="tableEdit('edit1','guanjianjuesedo1')" style="color: #667fff;">
+	                    			<i><img  style="margin: 2px;" src="images/editicon.png" alt="编辑" width="17px" height="17px"/></i><span>编辑</span>
+	                    		</a>
+                    		</div>
+                    		<div id="guanjianjuesedo1" style="float: right;display:none">
+                    			<a id="tableadd" onclick="tableAdd('guanjianjuese1')" class="btn btn-info" style="margin: 3px 10px 1px 0px;padding: 1px 10px 1px 10px;">增加</a>
+	                    		<a onclick="tableCancel('guanjianjuese1')" class="btn btn-default" style="margin: 3px 10px 1px 0px;padding: 1px 10px 1px 10px;">取消</a>
+	                    		<a id="tablesave" onclick="tableSave('edit1','guanjianjuesedo1')" class="btn btn-info" style="margin: 3px 0px 1px 0px;padding: 1px 10px 1px 10px;">保存</a>
+                    		</div>
+                    	</div>
+                    	<div style="display: flow-root">
+	                    	<table id="guanjianjuese" class="tablenew" style="width:49.7%;text-align: center;float: left;border-spacing: 0px;">
+	                    		<tr style="background-color: #d9dada;">
+	                    			<th style="text-align: center;border-right: 2px #ffffff solid;">角色</th>
+	                    			<th style="text-align: center;left:10%;border-right: 2px #ffffff solid;">姓名</th>
+	                    			<th style="text-align: center;left:20%;border-right: 2px #ffffff solid;">工号</th>
+	                    			<th style="text-align: center;left:30%;">角色胜任度</th>
+	                    		</tr>
+	                    		<tr><td>QA</td><td>XXX</td><td>123465</td><td>极好</td></tr>
+	                    		<tr><td>QA</td><td>XXX</td><td>12346</td><td>一般</td></tr>
+	                    		<tr><td>QA</td><td>XXX</td><td>12346</td><td>一般</td></tr>
+	                    	</table>
+	                    	<table id="guanjianjuese1" class="tablenew" style="width:49.7%;text-align: center;float: right;border-spacing: 0px;">
+	                    		<tr style="background-color: #d9dada;">
+	                    			<th style="text-align: center;border-right: 2px #ffffff solid;">角色</th>
+	                    			<th style="text-align: center;left:10%;border-right: 2px #ffffff solid;">姓名</th>
+	                    			<th style="text-align: center;left:20%;border-right: 2px #ffffff solid;">工号</th>
+	                    			<th style="text-align: center;left:30%;">角色胜任度</th>
+	                    		</tr>
+	                    		<tr><td>QA</td><td>XXX</td><td>12346</td><td>一般</td></tr>
+	                    		<tr><td>QA</td><td>XXX</td><td>12346</td><td>一般</td></tr>
+	                    		<tr><td>QA</td><td>XXX</td><td>12346</td><td>一般</td></tr>
+	                    	</table>
+                    	</div>
+                    </div>
+                    <div style="margin: 10px;border-color: #ddd;border-width: 1px;border-radius: 3px;border-style: solid;">
+                    	<div style="height: 30px;margin: 0px 10px 0px 10px;">
+                    		<span style="float: left;font-size: 15px;">CP评审</span>
+                    		<div id="edit2" data_obj="1" style="float: right;padding: 1px 0px 0px 0px;">
+	                    		<a onclick="tableEdit('edit2','cp-reviewdo')" style="color: #667fff;">
+	                    			<i><img  style="margin: 2px;" src="images/editicon.png" alt="编辑" width="17px" height="17px"/></i><span>编辑</span>
+	                    		</a>
+                    		</div>
+                    		<div id="cp-reviewdo" style="float: right;display:none">
+	                    		<a id="tableadd2" onclick="tableAdd2()" class="btn btn-info" style="margin: 3px 10px 1px 0px;padding: 1px 10px 1px 10px;">增加</a>
+	                    		<a onclick="tableCancel2()" class="btn btn-default" style="margin: 3px 10px 1px 0px;padding: 1px 10px 1px 10px;">取消</a>
+	                    		<a id="tablesave2" onclick="tableSave2()" class="btn btn-info" style="margin: 3px 0px 1px 0px;padding: 1px 10px 1px 10px;">保存</a>
+                    		</div>
+                    	</div>
+                    	<div style="display: flow-root">
+	                    	<table id="cp-review" class="tablenew" style="width:100%;text-align: center;float: left;border-spacing: 0px;">
+	                    		<tr style="background-color: #d9dada;">
+	                    			<th style="text-align: center;border-right: 2px #ffffff solid;">CP</th>
+	                    			<th style="text-align: center;left:10%;border-right: 2px #ffffff solid;">计划签发日期</th>
+	                    			<th style="text-align: center;left:30%;border-right: 2px #ffffff solid;">实际签发日期</th>
+	                    			<th style="text-align: center;left:50%;">偏差率</th>
+	                    			<th style="text-align: center;left:90%;"></th>
+	                    		</tr>
+	                    		<tr><td>CP1</td><td>yyyy/mm/dd</td><td>yyyy/mm/dd</td><td>XX</td><td>●</td></tr>
+	                    		<tr><td>CP2</td><td>yyyy/mm/dd</td><td>yyyy/mm/dd</td><td>XX</td><td>●</td></tr>
+	                    		<tr><td>CP3</td><td>yyyy/mm/dd</td><td>yyyy/mm/dd</td><td>XX</td><td>●</td></tr>
+	                    		<tr><td>CP4</td><td>yyyy/mm/dd</td><td>yyyy/mm/dd</td><td>XX</td><td>●</td></tr>
+	                    	</table>
+                    	</div>
+                    </div>
+                    	
+                </div>
+           
+            </td>
+           
+        </tr>
+    </table>
+   <!--  <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('Div1'));
+
+        // 指定图表的配置项和数据
+        var option1 = {
+            tooltip: {},
+            legend: {
+                data: ['月度生产率', '项目E2E生产率', '迭代生产率']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '月度生产率',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '项目E2E生产率',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '迭代生产率',
+                type: 'bar',
+                data: []
+            },
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+       // myChart1.setOption(option1);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('Div2'));
+
+        // 指定图表的配置项和数据
+        var option2 = {
+            tooltip: {},
+            legend: {
+                data: ['代码Review缺陷密度']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '代码Review缺陷密度',
+                type: 'line',
+                data: []
+            }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        //myChart2.setOption(option2);
+
+        var myChart3 = echarts.init(document.getElementById('Div3'));
+        // 指定图表的配置项和数据
+        var option3 = {
+            tooltip: {},
+            legend: {
+                data: ['问题单趋势分析']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '问题单趋势分析',
+                type: 'line',
+                data: []
+            }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+       // myChart3.setOption(option3);
+    </script> -->
+</body>
+</html>

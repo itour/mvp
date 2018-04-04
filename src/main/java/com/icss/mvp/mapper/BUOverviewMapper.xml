@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.IBuOverviewDao">
+	<resultMap type="com.icss.mvp.entity.OrganizeMgmer" id="organize">
+		<result property="id" column="NODE_ID"/>
+		<result property="name" column="NODE_NAME"/>
+		<result property="level" column="LEVEL"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="creater" column="CREATOR"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+		<result property="updateUser" column="UPDATE_USER"/>
+	</resultMap>
+	
+	<resultMap type="com.icss.mvp.entity.ProjectSummary" id="summary">
+		<result property="name" column="pdu"/>
+		<result property="addNum" column="addNum"/>
+		<result property="overNum" column="endNum"/>
+		<result property="fpNum" column="fpNum"/>
+		<result property="tmNum" column="tmNum"/>
+	</resultMap>
+	
+	<resultMap type="com.icss.mvp.entity.MonthSummary" id="monthSummary">
+		<result property="month" column="mon"/>
+		<result property="addNum" column="addNum"/>
+		<result property="overNum" column="endNum"/>
+		<result property="totalNum" column="totalNum"/>
+	</resultMap>
+	
+	<resultMap type="com.icss.mvp.entity.ProjectInfo" id="proj">
+		<result property="month" column="month"/>
+		<result property="no" column="no"/>
+		<result property="bu" column="bu"/>
+		<result property="du" column="pdu"/>
+	</resultMap>
+  	
+  	<select id="getBus"  parameterType="java.lang.String"  resultType="java.lang.String">
+  	select bu from project_info group by bu
+  	</select>
+  	<select id="getPus"  parameterType="java.lang.String"  resultType="java.lang.String">
+  		select a.node_name
+		from oranization_manager a, (select * from oranization_manager where node_name=#{bu} and parent_id is null)b
+		where a.parent_id = b.node_id
+		group by a.node_name
+  	</select>
+  	
+  	<select id="getProjCategory" resultType="com.icss.mvp.entity.ProjectInfo" parameterType="java.lang.String">
+  		select a.name, a.no, a.BU,a.PDU, DATE_FORMAT(a.start_date,'%Y-%m') as month
+		from project_info a
+		where bu = #{bu} and pdu = #{pdu}
+		order by month
+  	</select>
+
+	<select id="getBuOpts" resultMap="organize">
+		select NODE_ID, NODE_NAME, LEVEL, CREATE_DATE, CREATOR, UPDATE_DATE, UPDATE_USER 
+		from oranization_manager
+		where LEVEL = 0
+		group by NODE_NAME
+	</select>
+	
+	<select id="getProjectSummaries" parameterType = "java.lang.String" resultMap="summary">
+		  <![CDATA[
+		  select 
+	org.NODE_NAME as pdu,
+	count(case when DATE_FORMAT(pro.START_DATE, '%Y%M') = DATE_FORMAT(NOW(), '%Y%M') then 1 else null end ) as addNum,
+	count(case when DATE_FORMAT(pro.END_DATE, '%Y%M') = DATE_FORMAT(NOW(), '%Y%M') then 1 else null end ) as endNum,
+	count(case when pro.TYPE = 'FP' then 1 else null end ) as fpNum,
+	count(case when pro.TYPE = 'TM' then 1 else null end ) as tmNum
+from oranization_manager org
+LEFT JOIN project_info pro on pro.PDU = org.NODE_NAME
+	and (DATE_FORMAT(pro.START_DATE, '%Y%M') = DATE_FORMAT(NOW(), '%Y%M')
+	or DATE_FORMAT(pro.END_DATE, '%Y%M') = DATE_FORMAT(NOW(), '%Y%M'))
+where 
+	(select org1.NODE_NAME from oranization_manager org1 where org.PARENT_ID = org1.NODE_ID) = #{bu}
+group by org.NODE_NAME
+			]]>
+	</select>
+	
+	<sql id="union12Month">
+		UNION
+		SELECT '01' as mon,'0' as addNum
+		UNION
+		SELECT '02' as mon,'0' as addNum
+		UNION
+		SELECT '03' as mon,'0' as addNum
+		UNION
+		SELECT '04' as mon,'0' as addNum
+		UNION
+		SELECT '05' as mon,'0' as addNum
+		UNION
+		SELECT '06' as mon,'0' as addNum
+		UNION
+		SELECT '07' as mon,'0' as addNum
+		UNION
+		SELECT '08' as mon,'0' as addNum
+		UNION
+		SELECT '09' as mon,'0' as addNum
+		UNION
+		SELECT '10' as mon,'0' as addNum
+		UNION
+		SELECT '11' as mon,'0' as addNum
+		UNION
+		SELECT '12' as mon,'0' as addNum
+	</sql>
+	<select id="getMonthSummary"  parameterType = "java.lang.String" resultMap="monthSummary">
+	<![CDATA[
+	SELECT
+	SUBSTRING(mon.mon, 1,7) as mon,count(pro.NO) as totalNum,
+	count(case when DATE_FORMAT(pro.START_DATE, '%Y%M') = DATE_FORMAT(mon.mon, '%Y%M') then 1 else null end) as addNum,
+	count(case when DATE_FORMAT(pro.END_DATE, '%Y%M') = DATE_FORMAT(mon.mon, '%Y%M') then 1 else null end) as endNum
+from (
+select date_add(NOW(), interval -3 month) as mon
+union
+select date_add(NOW(), interval -2 month) as mon
+union
+select date_add(NOW(), interval -1 month) as mon
+union
+select date_add(NOW(), interval 0 month) as mon
+union
+select date_add(NOW(), interval 1 month) as mon
+union
+select date_add(NOW(), interval 2 month) as mon
+) as mon
+left join project_info pro on pro.BU = #{bu} 
+	and SUBSTRING(pro.START_DATE, 1,7) <= SUBSTRING(mon.mon, 1,7)
+	and SUBSTRING(pro.END_DATE, 1,7) >= SUBSTRING(mon.mon, 1,7)
+group by SUBSTRING(mon.mon, 1,7)
+ORDER BY SUBSTRING(mon.mon, 1,7)
+]]>
+	</select>
+	
+	<select id="getProjProductity" parameterType = "java.lang.String" resultType="com.icss.mvp.entity.ProjProductivity">
+			SELECT
+				ORM.NODE_NAME AS pdu,
+				AVG(CASE WHEN VAL.PARAMETER_ID =83 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS ydscl,
+				AVG(CASE WHEN VAL.PARAMETER_ID =84 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS e2escl,
+				AVG(CASE WHEN VAL.PARAMETER_ID =85 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS ddscl
+			FROM ORANIZATION_MANAGER ORM
+			LEFT JOIN PROJECT_INFO PRO ON PRO.PDU = ORM.NODE_NAME
+			LEFT JOIN PROJECT_PARAMETER_VALUE_NEW VAL ON VAL.NO = PRO.NO
+				AND VAL.PARAMETER_ID IN (83,84,85)
+				AND DATE_FORMAT(VAL.MONTH,'%Y%m') = DATE_FORMAT(NOW(),'%Y%m')
+			WHERE ORM.LEVEL = 1
+				AND EXISTS(
+					SELECT TMP.NODE_ID FROM ORANIZATION_MANAGER TMP WHERE TMP.NODE_ID=ORM.PARENT_ID
+						AND TMP.NODE_NAME = #{buName} AND TMP.LEVEL = 0
+				)
+			GROUP BY ORM.NODE_NAME
+	</select>
+	
+	<select id="getProjDetail" parameterType = "java.lang.String" resultType="com.icss.mvp.entity.MeasureInfo">
+		select month, pdu, area, type, no, projectName, pm, name, value
+		from(
+			SELECT
+				DATE_FORMAT(VAL.MONTH,'%Y-%m') AS MONTH,
+				PRO.PDU,PRO.AREA,PRO.TYPE,
+				PRO.NO,PRO.NAME as projectName,
+				(SELECT PROJECT_MEMBER.NAME FROM PROJECT_MEMBER WHERE PROJECT_MEMBER.NO = PRO.NO
+					AND PROJECT_MEMBER.POSITION = 'PM' LIMIT 1) AS PM,
+				INFO.NAME AS NAME,INFO.UNIT,MAX(VAL.VALUE) AS VALUE
+			FROM PROJECT_INFO PRO
+			LEFT JOIN PROJECT_PARAMETER_VALUE_NEW VAL ON VAL.NO = PRO.NO
+				AND VAL.PARAMETER_ID in (82,83,84,85,86,88,89,95,97,110)
+			LEFT JOIN PARAMETER_INFO INFO ON INFO.ID = VAL.PARAMETER_ID
+			WHERE PRO.BU = #{buName}
+			GROUP BY DATE_FORMAT(VAL.MONTH,'%Y%m'),PRO.PDU,PRO.AREA,PRO.TYPE,PRO.NO,PRO.NAME,INFO.NAME,INFO.UNIT
+		)b
+		where 1=1 
+		<if test="proj.month!=null and proj.month!=''">  
+	   		 AND month = #{proj.month}  
+	    </if>
+	   <if test="proj.pdu!=null and proj.pdu!=''">  
+	   		 AND PDU = #{proj.pdu}  
+	    </if>
+	    <if test="proj.area!=null and proj.area!=''">  
+	   		 AND AREA = #{proj.area}  
+	    </if>
+	     <if test="proj.type!=null and proj.type!=''">  
+	   		 AND TYPE = #{proj.type}  
+	    </if>
+	     <if test="proj.no!=null and proj.no!=''">  
+	   		 AND NO  like concat('%',  #{proj.no} , '%')
+	    </if>
+	    <if test="proj.name!=null and proj.name!=''">  
+	   		 AND projectName like concat('%', #{proj.name} ,'%')
+	    </if>
+	    <if test="proj.pm!=null and proj.pm!=''">  
+	   		 AND pm  like concat('%',  #{proj.pm} , '%')
+	    </if> 
+		
+	</select>
+	
+	<select id="getProjIndicator"  parameterType = "java.lang.String" resultType="com.icss.mvp.entity.ProjProductivity">
+	<![CDATA[
+				SELECT
+					PRO.NO,PRO.NAME,IFNULL(VAL.VALUE,0) AS VALUE
+				FROM PROJECT_INFO PRO
+				LEFT JOIN PROJECT_PARAMETER_VALUE_NEW VAL ON VAL.NO = PRO.NO
+					AND DATE_FORMAT(VAL.MONTH,'%Y%m') = DATE_FORMAT(NOW(),'%Y%m')
+					AND EXISTS(
+						SELECT * FROM PARAMETER_INFO INFO 
+						WHERE INFO.NAME = #{col} AND INFO.ID = VAL.PARAMETER_ID
+					)
+				WHERE PRO.BU = #{buName}
+					AND SUBSTRING(PRO.START_DATE, 1,7) <= SUBSTRING(NOW(), 1,7)
+					AND SUBSTRING(PRO.END_DATE, 1,7) >= SUBSTRING(NOW(), 1,7)
+				ORDER BY IFNULL(VAL.VALUE,0) DESC
+				limit 5
+				]]>
+	</select>
+	
+	<select id="getSpecProjChartData" parameterType = "java.lang.String" resultType="com.icss.mvp.entity.ProjProductivity">
+		SELECT
+			DATE_FORMAT(VAL.MONTH,'%Y-%m') AS MONTH,
+			MAX(CASE WHEN VAL.PARAMETER_ID =83 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS ydscl,
+			MAX(CASE WHEN VAL.PARAMETER_ID =84 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS e2escl,
+			MAX(CASE WHEN VAL.PARAMETER_ID =85 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS ddscl,
+			MAX(CASE WHEN VAL.PARAMETER_ID =137 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS wtdwclxl,
+			MAX(CASE WHEN VAL.PARAMETER_ID =105 THEN IFNULL(VAL.VALUE,0) ELSE 0 END ) AS dmreviewqxm
+		FROM PROJECT_INFO PRO
+		LEFT JOIN PROJECT_PARAMETER_VALUE_NEW VAL ON VAL.NO = PRO.NO
+			AND VAL.PARAMETER_ID IN (83,84,85,137,105)
+		WHERE
+			PRO.NO = #{no}
+		GROUP BY DATE_FORMAT(VAL.MONTH,'%Y-%m')
+	</select>
+	
+	<select id="getMeasureResult" parameterType="java.lang.String" resultType="com.icss.mvp.entity.MeasureInfo">
+		SELECT INFO.NAME,PRO.UNIT,DATE_FORMAT(VAL.MONTH,'%Y-%m') AS MONTH,MAX(VAL.VALUE) AS VALUE
+		FROM CODE_MASTER_INFO CODE
+		INNER JOIN PARAMETER_INFO INFO ON INFO.SMALL_TYPE_VALUE = CODE.VALUE
+		INNER JOIN PROJECT_PARAMETER PRO ON PRO.PARAMETER_ID = INFO.ID
+		LEFT JOIN PROJECT_PARAMETER_VALUE_NEW VAL ON VAL.NO = PRO.NO
+			AND VAL.PARAMETER_ID = PRO.PARAMETER_ID
+		WHERE 
+			CODE.CODEKEY = 'SmallType'
+			AND CODE.NAME = #{smallType}
+			AND SUBSTR(CODE.VALUE,1,1) = 
+				(SELECT CODE2.VALUE FROM CODE_MASTER_INFO CODE2 WHERE CODE2.CODEKEY = 'BigType' AND CODE2.NAME = #{bigType} )
+			AND PRO.NO = #{projNo}
+			AND PRO.IS_DISPLAY = 1
+		GROUP BY INFO.NAME,PRO.UNIT,DATE_FORMAT(VAL.MONTH,'%Y-%m')
+	</select>
+	
+	<select id="getProjOverview" parameterType="java.lang.String" resultType="com.icss.mvp.entity.MeasureInfo">
+		SELECT
+			DATE_FORMAT(VAL.MONTH,'%Y-%m') AS MONTH,
+			INFO.NAME AS NAME,PAR.UNIT AS UNIT,	MAX(VAL.VALUE) AS VALUE
+		FROM PROJECT_INFO PRO
+		LEFT JOIN PROJECT_PARAMETER_VALUE_NEW VAL ON VAL.NO = PRO.NO
+			AND VAL.PARAMETER_ID in (82,83,84,85,86,88,89,95,97,110)
+		LEFT JOIN PROJECT_PARAMETER PAR ON PAR.NO = PRO.NO
+			AND PAR.PARAMETER_ID = VAL.PARAMETER_ID
+		LEFT JOIN PARAMETER_INFO INFO ON INFO.ID = VAL.PARAMETER_ID
+		WHERE PRO.NO = #{no}
+		GROUP BY DATE_FORMAT(VAL.MONTH,'%Y-%m'),INFO.NAME,PAR.UNIT
+	</select>
+	
+	<select id="getGridTitles" parameterType="java.lang.String" resultType="com.icss.mvp.entity.MeasureInfo" >
+	SELECT
+		INFO.NAME AS NAME,INFO.UNIT AS UNIT
+	FROM 
+		PARAMETER_INFO INFO
+	WHERE
+		INFO.ID in (82,83,84,85,86,88,89,95,97,110)
+	</select>
+</mapper>

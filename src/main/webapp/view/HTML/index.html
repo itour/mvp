@@ -1,0 +1,393 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>可视化度量平台</title>
+    <link rel="stylesheet" href="../../resources/easyui/themes/default/easyui.css" type="text/css" />
+    <link rel="stylesheet" href="css/DefaultSkin.css" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../resources/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/comm/datagrid-header-tooltip.js"></script>
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="../../resources/underscore/underscore.js"></script>
+    <script type="text/javascript" src="../../resources/js/comm/comm.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript"> 
+
+        function changeTab(obj) {
+            obj.className = 'tabs-a-current';
+            if (obj.id == "tab1") {
+                document.getElementById('tab2').className = '';
+                document.getElementById('tab1Page').style.display = 'block';
+                document.getElementById('tab2Page').style.display = 'none';
+            }
+            else {
+                document.getElementById('tab1').className = '';
+                document.getElementById('tab1Page').style.display = 'none';
+                document.getElementById('tab2Page').style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="top">
+        <div class="logo-index" style="width: 400px;">
+            <a href=""><img src="images/logo.png" style="margin-left: 20px;margin-top: 14px;" /></a>
+            <!-- <div class="logo-text" style="float:right;margin:16px 110px 16px auto;"><span style="font-size: 20px; color: white;">2012&nbsp;&nbsp;研发项目<br />可视化管理平台</span></div> -->
+        </div>
+        <div class="daohang-index" style="float: right;">
+            <span style="font-size: 15px;color: white;line-height: 80px;">欢迎您，</span><span style="font-size: 15px;color: white;line-height: 80px;">XXXXXX</span><div style="width: 1.5px;height: 35px;background-color: white;display:inline-block;margin-left: 20px;margin-bottom: -10px;"></div>
+            <span style="font-size: 15px;color: white;line-height: 80px;margin-left: 20px;">角色</span><div style="width:0; height:0; border:5px #ffffff solid; border-bottom-width:0; border-left-color:#2e8afc; border-right-color:#2e8afc;display: inline-block;margin-left: 10px;margin-bottom: 3px;"></div>
+        </div>
+    </div>
+    <!-- <div class="left">
+        <div class="list">
+            <ul class="yiji" id="leftNav">
+
+            </ul>
+        </div>
+    </div> -->
+    <div class="main">
+        <div class="main-topmenu-text">
+            <span style="display:none; color: #666; font-size: 14px; font-weight: bold;">事业部：</span><select style="display:none;" id="bu_sel">
+            </select>
+            361成熟度
+        </div>
+        <!-- <div class="title">
+            <span id="bu_name"></span><span style="padding-left:0px">项目情况</span></div> -->
+        <div class="main-topmenu-line">
+        </div>
+        <div class="main-topmenu-line2">
+        </div>
+        <div style=" height:500px;">
+			<div style=" z-index:1; display:inline-block; position:relative; top:25px; left:150px;">
+				<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">红灯项目数</span>
+				<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">0</span>
+				<img src="images/red0bg.png" width="300" />
+				<div style=" z-index:1; margin-top:-180px; display: none;">
+					<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">红灯项目数</span>
+					<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">0</span>
+					<img src="images/redbg.png" width="300" />
+				</div>
+			</div>
+			<div style=" z-index:1; display:inline-block; position:relative; top:30px; left:495px;">
+				<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">绿灯项目数</span>
+				<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">10</span>
+				<img src="images/green0bg.png" width="300" />
+				<div style=" z-index:1; margin-top:-184px;">
+					<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">绿灯项目数</span>
+					<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">10</span>
+					<img src="images/greenbg.png" width="300" />
+				</div>
+			</div>
+			<div style=" display:inline-block; position:absolute; top:150px; left:50%; margin-left:-250px; z-index:0">
+				<span style="font-size: 25px; color: white;position: absolute;top: 150px;left: 200px;">项目总数</span>
+				<span style="font-size: 50px; color: white;position: absolute;top: 220px;left: 210px;">361</span>
+				<img src="images/allbg.png" width="500" />
+			</div>
+			<div style=" z-index:1; display:inline-block; position:relative; top:270px; left:-455px;">
+				<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">黄灯项目数</span>
+				<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">3</span>
+				<img src="images/yellow0bg.png" width="300" />
+				<div style=" z-index:1; margin-top:-184px;">
+					<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">黄灯项目数</span>
+					<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">3</span>
+					<img src="images/yellowbg.png" width="300" />
+				</div>
+			</div>
+			<div style=" z-index:1; display:inline-block; position:relative; top:265px; left:-110px;">
+				<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">蓝灯项目数</span>
+				<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">13</span>
+				<img src="images/blue0bg.png" width="300" />
+				<div style=" z-index:1; margin-top:-184px;">
+					<span style="font-size: 15px; color: white;position: absolute;top: 50px;left: 60px;">蓝灯项目数</span>
+					<span style="font-size: 40px; color: white;position: absolute;top: 100px;left: 100px;">13</span>
+					<img src="images/bluebg.png" width="300" />
+				</div>
+			</div>
+        </div>
+        <div class="main-content">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td style="padding-right: 10px;">
+                        <!-- <div class="content-top-chart"> -->
+                            <!--<div class="change-chart">
+                                <div class="chart-title">
+                                    <span>本月项目生产率</span></div>
+                                <div class="chartDiv">
+                                    <div id="Div1" style="width: 100%; height: 330px;">
+                                    </div>
+                                </div>
+                            </div>-->
+                        <!-- </div> -->
+                        <!-- <center>
+                            <div class="change-button" id="changeStatusBtn">
+                                <a id="btnChange">切换为列表</a></div>
+                        </center> -->
+                        <div class="main-topmenu-text">
+                        	项目(版本)列表
+        				</div>
+                        <div class="main-topmenu-line line3">
+				        </div>
+				        <div class="main-topmenu-line2 line3">
+				        </div>
+                        <div id="divChart" style="display: none;">
+                            <div class="chart-left">
+                                <!-- <div class="chart-title">
+                                    <span>本月项目数汇总</span></div> -->
+                                <!-- <div class="chart-block">
+                                    <div class="visitors">
+                        				<center>
+                                            <table width="98%">
+                                                <tr>
+                                                    <td>
+                                                        <table width="100%">
+                                                            <tr>
+                                                                <td width="80px" height="100px" align="center" valign="middle" style="background: url(images/circle.png) no-repeat center;">
+                                                                    <span style="font-size: 40px; color: #ffffff;" id="addedPoNum"></span>
+                                                                </td>
+                                                                <td width="100px">
+                                                                    <div style="margin-top: 20px;">
+                                                                        本月新增项目数</div>
+                                                                </td>
+                                                                <td align="right" style="background: url(images/chart.png) no-repeat center; background-size: contain;"> -->
+                                                                    <!--<img src="images/chart.png" height="50px" />-->
+                                                                <!-- </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="search">
+                                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="data-table" id="summaryTab">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <td width="40%">
+                                                                        </td>
+                                                                        <td width="15%">
+                                                                            新增
+                                                                        </td>
+                                                                        <td width="15%">
+                                                                            结项
+                                                                        </td>
+                                                                        <td width="15%">
+                                                                            FP
+                                                                        </td>
+                                                                        <td width="15%">
+                                                                            TM
+                                                                        </td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                       
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="chart-right">
+                                <!-- <div class="chart-title">
+                                    <span>月度项目数</span></div>
+                                <div class="chart-block">
+                                    <div id="main" style="width: 100%; height: 330px;">
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div id="divTable" style="height:399px;text-align:center;border: 0px #666 solid;margin-top:20px;">
+                            <div class="search" style="height: 20%;">
+                            	<fieldset style="position:relative; top: 1px; width:94%; height:50%; margin:0 auto; padding-top:12px; background-color: #ffffff; border: 2px #dddddd solid;">
+	                                <table width="100%" class="searchTable" style="margin-top:auto 0;">
+	                                    <!-- <tr>
+	                                        <td width="10%" align="right">
+	                                            统计月份
+	                                        </td>
+	                                        <td width="15%" align="left">
+	                                            <select name="" class="s1" id="month-sel">
+	                                            </select>
+	                                        </td>
+	                                        <td width="10%" align="right">
+	                                            产品部
+	                                        </td>
+	                                        <td width="15%" align="left">
+	                                            <select name="" class="s1" id="pdu-sel">
+	                                            </select>
+	                                        </td>
+	                                        <td width="10%" align="right">
+	                                            地域
+	                                        </td>
+	                                        <td width="15%" align="left">
+	                                            <select name="" class="s1" id="area-sel">
+	                                            </select>
+	                                        </td>
+	                                        <td width="10%" align="right">
+	                                            计费类型
+	                                        </td>
+	                                        <td width="15%" align="left">
+	                                            <select name="" class="s1" id="type-sel">
+	                                            </select>
+	                                        </td>
+	                                    </tr> -->
+	                                    <tr>
+	                                        <td width="8%" align="right">
+	                                         	   项目名称
+	                                        </td>
+	                                        <td width="10%" align="left">
+	                                            <input name="" type="text" class="s1" id="projName"/>
+	                                        </td>
+	                                        <td width="8%" align="right">
+	                                          	  项目经理
+	                                        </td>
+	                                        <td width="10%" align="left">
+	                                            <input name="" type="text" class="s1" id="projMgmr"/>
+	                                        </td>
+	                                        <td width="8%" align="right">
+	                                       		  项目日期
+	                                        </td>
+	                                        <td width="31%" align="left">
+	                                            <input name="" type="date" class="s1" id="month-sel"/>  至  <input name="" type="date" class="s1" id="month-sel"/>
+	                                        </td>
+	                                        <td width="25%" align="center" colspan="2">
+	                                            <input name="" type="button" value="查询" class="but1" id="queryBtn" style="width:60px; height:22px; background-color:#2e8afc; color:#ffffff; cursor:pointer; border:none; border-radius:3px; font-size:12px;"/>
+	                                            <input name="" type="button" value="导出" class="but1" id="exportBtn" style="width:60px; height:22px; background-color:#2e8afc; color:#ffffff; cursor:pointer; border:none; border-radius:3px; font-size:12px;"/>
+	                                            <input name="" type="button" value="详细筛选" class="but2" id="exportBtn" style="width:80px; height:22px; background-color:#ffffff; color:#2e8afc; cursor:pointer; border:none; border-radius:3px; font-size:12px; outline: none;"/>
+	                                            <div style="width:0; height:0; border:5px #2e8afc solid; border-bottom-width:0; border-left-color:#ffffff; border-right-color:#ffffff;display: inline-block;margin-left: -13px;margin-bottom: 2px;"></div>
+	                                        </td>
+	                                    </tr>
+	                                </table>
+	                        	</fieldset>
+                            </div>
+                            <div>
+	                            <div style="width:50%;text-align: left;float: left;margin: 10px auto 10px auto;"><span style="color: #2e8afc;font-size: 15px;padding-left: 30px;">全部项目</span></div>
+	                            <div style="width:50%;float: left;margin: 10px auto 10px auto;"><span style="color: #999999;font-size: 10px;padding-left: 410px;">数据更新时间：</span><span style="color: #999999;font-size: 10px;padding-left: 15px;">2018/3/28</span></div>
+                            </div>
+                            <div style="height:300px;width:100%; margin:10px auto 0 auto ">
+                             	<div id="projSummaryTable" style="height:100%;display:block;width:100%;">
+                            </div> 
+                            </div>
+                        </div>
+                    </td>
+                    <!-- <td width="222px" valign="top">
+                        <div class="right-info-td">
+                            <div class="right-info-title">
+                                <img src="images/paihang.png" style="padding-left: 10px;" /><span>本月项目指标排行榜</span></div>
+                            <div class="tabs">
+                                <a class="tabs-a-current" id="tab1" onclick="changeTab(this);">质量</a><a id="tab2"
+                                    onclick="changeTab(this);">效率</a></div>
+                            <div id="tab1Page">
+                                <div class="right-info-block">
+                                    <div class="info-block-t" id="wtds-div">回归不通过问题数</div>
+                                    <ul id="wtds">
+                                    </ul>
+                                </div>
+                                <div class="right-info-block">
+                                    <div class="info-block-t" id="lltsbyls-div">版本转测试失败次数</div>
+                                    <ul id="lltsbyls">
+                                    </ul>
+                                </div>
+                                <div class="right-info-block" style="border-bottom: 1px #b8def1 solid;">
+                                    <div class="info-block-t" id="ddqxs-div">网上问题数</div>
+                                    <ul id="ddqxs">
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="tab2Page" style="display: none">
+                                <div class="right-info-block">
+                                    <div class="info-block-t" id="dmzl-div">项目代码总量</div>
+                                    <ul id="dmzl">
+                                    </ul>
+                                </div>
+                                <div class="right-info-block">
+                                    <div class="info-block-t" id="zxyls-div">手动用例执行效率</div>
+                                    <ul id="zxyls">
+                                    </ul>
+                                </div>
+                                <div class="right-info-block" style="border-bottom: 1px #b8def1 solid;">
+                                    <div class="info-block-t" id="ddqxxgxl-div">迭代出口问题解决率</div>
+                                    <ul id="ddqxxgxl">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </td> -->
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip: {},
+            legend: {
+                data: ['新增', '结项', '总项目']
+            },
+            xAxis: {
+                data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+            },
+            yAxis: {},
+            series: [{
+                name: '新增',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '结项',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '总项目',
+                type: 'bar',
+                data: []
+            },
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('Div1'));
+
+        // 指定图表的配置项和数据
+        var option1 = {
+            tooltip: {},
+            legend: {
+                data: ['月度生产率', '项目E2E生产率', '迭代生产率']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '月度生产率',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '项目E2E生产率',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '迭代生产率',
+                type: 'bar',
+                data: []
+            },
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);
+
+    </script>
+</body>
+</html>

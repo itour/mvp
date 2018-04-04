@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.IUserManagerDao">
+	<resultMap id="UserMap" type="com.icss.mvp.entity.UserInfo">
+		<result property="USERID" column="USERID" />
+		<result property="USERNAME" column="USERNAME" />
+		<result property="PASSWORD" column="PASSWORD" />
+		<result property="ISONLINE" column="ISONLINE" />
+		<result property="CREATER" column="CREATER" />
+		<result property="CREATERTIME" column="CREATETIME" />
+		<result property="UPDATER" column="UPDATER" />
+		<result property="UPDATERTIME" column="UPDATETIME" />
+		<result property="IDENTITY" column="IDENTITY" />
+	</resultMap>
+
+	<resultMap id="UserNameMap" type="com.icss.mvp.entity.UserDetailInfo">
+		<result property="USERNAME" column="USERNAME" />
+	</resultMap>
+
+	<select id="isExistsByAccount" resultMap="UserNameMap">
+		SELECT * FROM sys_user
+		where USERNAME=#{USERNAME}
+	</select>
+
+    <select id="isExistis" resultType="com.icss.mvp.entity.UserInfo">
+        SELECT * FROM sys_user
+        where USERNAME=#{USERNAME}
+    </select>
+
+	<select id="queryUserInfo" resultType="com.icss.mvp.entity.UserInfo">
+		SELECT *
+		FROM
+		sys_user where
+		USERNAME=#{USERNAME} and
+		PASSWORD=#{PASSWORD}
+	</select>
+
+	<select id="queryUserInfos" resultMap="UserMap">
+		SELECT *
+		FROM
+		sys_user
+		WHERE 1=1
+		<if test="user.USERNAME!=null and user.USERNAME!=''">
+			AND USERNAME like CONCAT('%',#{user.USERNAME},'%')
+		</if>
+		<if test="sort!=null and sort!='' and order!=null and order!=''">
+			order by ${sort} ${order}
+		</if>
+	</select>
+
+	<insert id="addUserInfo" parameterType="com.icss.mvp.entity.UserDetailInfo">
+		INSERT INTO sys_user
+		(USERID, USERNAME, PASSWORD, CREATER, CREATETIME) VALUES
+		(#{USERID}
+		,#{USERNAME},#{PASSWORD}, #{CREATER}, #{CREATETIME});
+	</insert>
+
+	<update id="updateUser" parameterType="com.icss.mvp.entity.UserInfo">
+		UPDATE sys_user SET
+		PASSWORD=#{PASSWORD} WHERE
+		(USERNAME=#{USERNAME});
+	</update>
+
+	<delete id="deleteUser" parameterType="com.icss.mvp.entity.UserInfo">
+		DELETE FROM sys_user WHERE
+		USERID=#{USERID};
+	</delete>
+
+</mapper>

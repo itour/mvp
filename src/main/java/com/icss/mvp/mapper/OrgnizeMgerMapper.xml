@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icss.mvp.dao.IOrgnizeInfoDao">
+	<resultMap id="OrgnizeInfoMap" type="com.icss.mvp.entity.OrganizeInfo">
+	  <result property="nodeId" column="NODE_ID"/>
+	  <result property="nodeName" column="NODE_NAME" />
+	  <result property="parentId" column="PARENT_ID"/>
+	  <result property="level" column="LEVEL"/>
+	  <result property="createDate" column="CREATE_DATE"/>
+	  <result property="createror" column="CREATOR"/>
+	  <result property="updateDate" column="UPDATE_DATE"/>
+	   <result property="updateUser" column="UPDATE_USER"/>
+	</resultMap>
+	<select id="getList" resultMap="OrgnizeInfoMap" >
+		SELECT *
+		FROM oranization_manager
+		WHERE level = #{org.level}
+	</select>
+	
+	<select id="getNodeId" resultType="int">
+        SELECT NODE_ID FROM oranization_manager 
+        WHERE NODE_NAME = #{org.nodeName} AND LEVEL = #{org.level}
+	</select>
+	
+	<select id="getPDU" resultMap="OrgnizeInfoMap">
+		SELECT *
+		FROM oranization_manager
+		WHERE PARENT_ID = #{parentId}
+	</select>
+	
+	<select id="getProduct" resultMap="OrgnizeInfoMap">
+		SELECT *
+		FROM oranization_manager
+		WHERE LEVEL = #{level}
+	</select>
+	
+	<select id="getBU" resultMap="OrgnizeInfoMap">
+		SELECT *
+		FROM oranization_manager
+		WHERE 1=1
+		<choose>
+			<when test = "nodeName!=null and nodeName!=''">
+				AND NODE_NAME = #{nodeName}
+			</when>
+			<otherwise>
+				AND 0=1
+			</otherwise>
+		</choose>
+	</select>
+	 
+	 <select id="getParamId" resultMap="OrgnizeInfoMap">
+		SELECT *
+		FROM oranization_manager
+		WHERE NODE_NAME =#{org.nodeName}
+	</select> 
+	
+	
+	<select id="getBUName" resultMap="OrgnizeInfoMap">
+		SELECT *
+		FROM oranization_manager
+		WHERE LEVEL =0 AND NODE_ID = #{org.parentId}
+	</select>
+	
+	<select id="getOrignBU" resultMap="OrgnizeInfoMap">
+		SELECT *
+		FROM oranization_manager
+		WHERE LEVEL =0 AND NODE_ID = 1
+	</select>
+</mapper>
